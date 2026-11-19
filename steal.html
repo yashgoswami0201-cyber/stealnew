@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MetalHouse — India's Steel Bartan Marketplace</title>
+<style>
+:root{
+  /* black + blue palette */
+  --bg:#030712;
+  --bg-glow:#0a1e3d;
+  --card:#0a1628;
+  --card-2:#081020;
+  --card-3:#0d1e35;
+  --line:#17253d;
+  --line-bright:#1e3354;
+  --text:#e5edf7;
+  --muted:#7a8ba6;
+  --muted-2:#556480;
+  --blue:#2563eb;
+  --blue-bright:#60a5fa;
+  --blue-light:#93c5fd;
+  --blue-soft:rgba(37,99,235,.15);
+  --blue-glow:rgba(96,165,250,.35);
+  --cyan:#22d3ee;
+  --cyan-soft:rgba(34,211,238,.14);
+  --cyan-border:rgba(34,211,238,.35);
+  --red:#f87171;
+  --red-soft:rgba(248,113,113,.12);
+  --red-border:rgba(248,113,113,.35);
+  --amber:#fbbf24;
+  --amber-soft:rgba(251,191,36,.12);
+  --amber-border:rgba(251,191,36,.35);
+  --radius:14px;
+  --radius-lg:18px;
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{
+  margin:0;color:var(--text);line-height:1.5;min-height:100vh;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  background:
+    radial-gradient(1200px 700px at 50% -200px,var(--bg-glow) 0%,transparent 60%),
+    radial-gradient(900px 500px at 100% 100%,rgba(37,99,235,.08) 0%,transparent 50%),
+    var(--bg);
+  background-attachment:fixed;
+}
+h1,h2,h3,h4,p{margin:0}
+button{font:inherit;cursor:pointer;color:inherit}
+input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+[hidden]{display:none !important}
+
+/* ---------- header ---------- */
+header{
+  background:rgba(3,7,18,.85);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30;
+}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 0 8px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .mark{
+  width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#1e3a8a,#3b82f6);font-size:22px;
+  box-shadow:0 0 24px rgba(59,130,246,.35),inset 0 1px 0 rgba(255,255,255,.1);
+}
+.brand h1{
+  font-size:19px;letter-spacing:-.02em;font-weight:700;
+  background:linear-gradient(90deg,#e5edf7,#93c5fd);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.brand p{font-size:12.5px;color:var(--muted)}
+.me-btn{
+  border:1px solid var(--line-bright);background:rgba(37,99,235,.12);
+  border-radius:10px;padding:9px 15px;font-size:13.5px;
+  display:flex;gap:8px;align-items:center;transition:.15s;color:var(--blue-light);
+}
+.me-btn:hover{border-color:var(--blue-bright);background:var(--blue-soft);box-shadow:0 0 16px rgba(59,130,246,.2)}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:6px 0 13px;scrollbar-width:thin}
+.tabs::-webkit-scrollbar{height:5px}
+.tabs::-webkit-scrollbar-thumb{background:var(--line-bright);border-radius:9px}
+.tab{
+  white-space:nowrap;border:1px solid var(--line);background:var(--card-2);
+  border-radius:12px;padding:9px 16px;font-size:14px;color:var(--muted);
+  display:flex;gap:7px;align-items:center;transition:.15s;
+}
+.tab:hover{color:var(--text);border-color:var(--line-bright);background:var(--card)}
+.tab.active{
+  border-color:var(--blue-bright);color:var(--blue-light);font-weight:600;
+  background:rgba(37,99,235,.15);
+  box-shadow:0 0 0 1px rgba(96,165,250,.25),0 0 20px rgba(37,99,235,.2);
+}
+
+/* ---------- layout ---------- */
+main{padding:26px 0 80px}
+.view[hidden]{display:none}
+.h2{font-size:20px;letter-spacing:-.02em;margin-bottom:4px}
+.h3{font-size:15px;letter-spacing:-.01em;margin:26px 0 12px}
+.sub{font-size:13.5px;color:var(--muted);margin-bottom:18px}
+.row-between{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.list{display:grid;gap:14px}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.stat{
+  background:linear-gradient(180deg,var(--card),var(--card-2));
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px;text-align:center;position:relative;overflow:hidden;
+}
+.stat::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 0%,rgba(59,130,246,.12),transparent 70%);
+  pointer-events:none;
+}
+.stat .ico{font-size:20px}
+.stat .num{
+  font-size:26px;font-weight:800;letter-spacing:-.02em;
+  color:var(--blue-bright);
+  text-shadow:0 0 20px rgba(96,165,250,.4);
+}
+.stat .lbl{font-size:13px;color:var(--muted)}
+
+/* ---------- cards / groups ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius)}
+.pad{padding:18px 20px}
+.banner{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  padding:16px 20px;margin-bottom:26px;flex-wrap:wrap;
+  background:linear-gradient(135deg,var(--card),rgba(30,58,138,.15));
+  border-color:var(--line-bright);
+}
+.banner p{font-size:14.5px}
+.group{margin-bottom:30px}
+.group-title{font-size:16px;display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.count{
+  display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;
+  border-radius:99px;border:1px solid var(--line-bright);font-size:12px;font-weight:600;
+  color:var(--blue-light);padding:0 7px;background:var(--blue-soft);
+}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+
+/* ---------- product card ---------- */
+.pcard{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;display:flex;flex-direction:column;transition:.2s;
+}
+.pcard:hover{
+  border-color:var(--line-bright);
+  box-shadow:0 8px 30px rgba(0,0,0,.4),0 0 0 1px rgba(96,165,250,.15);
+  transform:translateY(-2px);
+}
+.pcard .media{
+  position:relative;aspect-ratio:4/3;overflow:hidden;
+  background:linear-gradient(135deg,#0d1e35,#0a1628);
+  display:grid;place-items:center;font-size:48px;
+  border-bottom:1px solid var(--line);
+}
+.pcard .media img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:.95;transition:.3s;
+}
+.pcard:hover .media img{opacity:1;transform:scale(1.03)}
+.pcard .media::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 55%,rgba(3,7,18,.7) 100%);
+  pointer-events:none;
+}
+.pcard .media .cat-tag{
+  position:absolute;top:10px;left:10px;z-index:2;
+  font-size:11px;font-weight:600;padding:4px 10px;border-radius:99px;
+  background:rgba(3,7,18,.75);backdrop-filter:blur(6px);
+  color:var(--blue-light);border:1px solid rgba(96,165,250,.3);
+}
+.pbody{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.pbody h4{font-size:15px;letter-spacing:-.01em;color:var(--text)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{
+  font-size:11.5px;padding:2px 9px;border-radius:99px;
+  background:var(--card-3);color:var(--muted);
+  border:1px solid var(--line-bright);white-space:nowrap;display:inline-block;
+}
+.chip-blue{background:var(--blue-soft);color:var(--blue-light);border-color:rgba(96,165,250,.35)}
+.chip-cyan{background:var(--cyan-soft);color:var(--cyan);border-color:var(--cyan-border)}
+.chip-amber{background:var(--amber-soft);color:var(--amber);border-color:var(--amber-border)}
+.chip-red{background:var(--red-soft);color:var(--red);border-color:var(--red-border)}
+.chip-btn{cursor:pointer;padding:7px 14px;font-size:12.5px;transition:.15s;background:var(--card-2)}
+.chip-btn:hover{border-color:var(--blue-bright);color:var(--blue-light)}
+.chip-btn.active{
+  background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600;
+  box-shadow:0 0 16px rgba(37,99,235,.4);
+}
+.meta{font-size:12.5px;color:var(--muted)}
+.price{
+  font-size:20px;font-weight:800;letter-spacing:-.02em;
+  color:var(--blue-bright);text-shadow:0 0 16px rgba(96,165,250,.3);
+}
+.price span{font-size:12.5px;font-weight:500;color:var(--muted);text-shadow:none}
+.divider{height:1px;background:var(--line);margin:5px 0}
+.biz{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.desc{
+  font-size:12.5px;color:var(--muted);
+  border-left:2px solid var(--blue);padding-left:10px;
+}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:10px;align-items:center}
+
+/* ---------- buttons ---------- */
+.btn{
+  background:linear-gradient(135deg,#2563eb,#3b82f6);color:#fff;border:none;border-radius:10px;
+  padding:10px 18px;font-size:14px;font-weight:600;transition:.15s;
+  box-shadow:0 4px 14px rgba(37,99,235,.3);
+}
+.btn:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,99,235,.45)}
+.btn.sm{padding:7px 14px;font-size:13px;border-radius:9px;box-shadow:0 3px 10px rgba(37,99,235,.25)}
+.btn.ghost{
+  background:var(--card-2);color:var(--text);
+  border:1px solid var(--line-bright);box-shadow:none;
+}
+.btn.ghost:hover{border-color:var(--blue-bright);background:var(--blue-soft);color:var(--blue-light)}
+.btn.danger{
+  background:transparent;color:var(--red);border:1px solid var(--red-border);box-shadow:none;
+}
+.btn.danger:hover{background:var(--red-soft);color:#fca5a5}
+.btn.link{
+  background:none;color:var(--blue-bright);font-weight:600;padding:8px 4px;border:none;box-shadow:none;
+}
+.btn.link:hover{transform:none;text-decoration:underline;color:var(--blue-light);filter:none}
+
+/* ---------- forms ---------- */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:block;margin-bottom:12px}
+.field>span{display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px}
+.field input,.field select,.field textarea{
+  width:100%;background:var(--card-2);border:1px solid var(--line);
+  border-radius:10px;padding:10px 12px;font-size:14px;outline:none;
+  transition:.15s;resize:vertical;color:var(--text);
+}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted-2)}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:var(--blue-bright);background:var(--card);
+  box-shadow:0 0 0 3px rgba(96,165,250,.15);
+}
+.searchbar input{
+  width:100%;background:var(--card);border:1px solid var(--line);
+  border-radius:12px;padding:12px 15px;font-size:14px;outline:none;
+  transition:.15s;color:var(--text);
+}
+.searchbar input:focus{border-color:var(--blue-bright);box-shadow:0 0 0 3px rgba(96,165,250,.15)}
+
+/* ---------- image picker ---------- */
+.img-picker{
+  display:flex;gap:12px;align-items:flex-start;padding:10px;
+  background:var(--card-2);border:1px solid var(--line);border-radius:10px;
+}
+.img-preview{
+  width:80px;height:80px;border-radius:8px;overflow:hidden;flex-shrink:0;
+  background:var(--card-3);display:grid;place-items:center;font-size:28px;
+  border:1px solid var(--line-bright);position:relative;
+}
+.img-preview img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.img-picker-info{flex:1;min-width:0}
+.img-picker-info label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
+.img-picker-info input[type="url"]{
+  width:100%;background:var(--bg);border:1px solid var(--line);
+  border-radius:8px;padding:8px 10px;font-size:12.5px;outline:none;color:var(--text);
+}
+.img-picker-info input[type="url"]:focus{border-color:var(--blue-bright)}
+.img-upload-btn{
+  display:inline-block;margin-top:6px;padding:6px 12px;font-size:12px;
+  background:var(--blue-soft);border:1px solid rgba(96,165,250,.35);
+  border-radius:8px;color:var(--blue-light);cursor:pointer;transition:.15s;
+}
+.img-upload-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.img-upload-btn input{display:none}
+
+/* ---------- specs grid ---------- */
+.specs{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;
+  background:var(--card-2);border:1px solid var(--line);border-radius:11px;
+  padding:12px 14px;margin:12px 0;
+}
+.specs div{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.specs b{
+  display:block;font-size:14px;color:var(--text);text-transform:none;
+  letter-spacing:0;margin-top:2px;font-weight:600;
+}
+
+/* ---------- empty ---------- */
+.empty{
+  text-align:center;padding:52px 20px;border:1px dashed var(--line-bright);
+  border-radius:var(--radius);color:var(--muted);font-size:13.5px;background:var(--card-2);
+}
+.empty b{display:block;color:var(--text);margin-bottom:6px;font-size:14.5px}
+
+/* ---------- chats ---------- */
+.subtabs{display:flex;gap:8px;margin:12px 0 18px}
+.subtab{
+  border:1px solid var(--line);background:var(--card-2);border-radius:99px;
+  padding:7px 16px;font-size:13.5px;color:var(--muted);transition:.15s;
+}
+.subtab:hover{border-color:var(--line-bright);color:var(--text)}
+.subtab.active{
+  background:var(--blue-soft);border-color:var(--blue-bright);
+  color:var(--blue-light);font-weight:600;
+  box-shadow:0 0 0 1px rgba(96,165,250,.25);
+}
+.chat-wrap{display:grid;grid-template-columns:270px 1fr;gap:16px}
+.threads{display:flex;flex-direction:column;gap:8px;max-height:520px;overflow:auto}
+.thread{
+  text-align:left;background:var(--card);border:1px solid var(--line);
+  border-radius:12px;padding:11px 13px;transition:.15s;width:100%;
+}
+.thread:hover{border-color:var(--line-bright);background:var(--card-3)}
+.thread.active{
+  border-color:var(--blue-bright);background:var(--blue-soft);
+  box-shadow:0 0 0 1px rgba(96,165,250,.2);
+}
+.thread b{font-size:13.5px;display:block;color:var(--text)}
+.thread small{
+  font-size:12px;color:var(--muted);display:block;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.pane{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  display:flex;flex-direction:column;min-height:420px;overflow:hidden;
+}
+.pane-head{padding:13px 16px;border-bottom:1px solid var(--line);background:var(--card-2)}
+.msgs{
+  flex:1;padding:16px;display:flex;flex-direction:column;gap:9px;
+  overflow:auto;max-height:420px;background:var(--card-2);
+}
+.msg{
+  max-width:78%;padding:9px 13px;border-radius:13px;font-size:13.5px;
+  white-space:pre-wrap;background:var(--card-3);align-self:flex-start;
+  word-break:break-word;border:1px solid var(--line);
+}
+.msg.mine{
+  background:linear-gradient(135deg,#2563eb,#3b82f6);color:#fff;
+  align-self:flex-end;border:none;
+  box-shadow:0 4px 14px rgba(37,99,235,.3);
+}
+.msg small{display:block;font-size:10.5px;opacity:.75;margin-top:3px}
+.msg-form{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:var(--card)}
+.msg-form input{
+  flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 12px;
+  font-size:14px;outline:none;background:var(--card-2);color:var(--text);
+}
+.msg-form input:focus{border-color:var(--blue-bright);background:var(--bg);box-shadow:0 0 0 3px rgba(96,165,250,.15)}
+
+/* ---------- modal ---------- */
+.modal{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);
+  display:grid;place-items:center;padding:18px;z-index:60;overflow:auto;
+}
+.modal[hidden]{display:none}
+.modal-box{
+  background:var(--card);border:1px solid var(--line-bright);border-radius:var(--radius-lg);
+  width:min(540px,100%);padding:22px;max-height:92vh;overflow:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(96,165,250,.15);
+}
+.modal-box h3{font-size:17px;margin-bottom:4px}
+.modal-box .muted{font-size:13px;color:var(--muted);margin-bottom:16px}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
+
+/* ---------- toast ---------- */
+.toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,16px);
+  background:linear-gradient(135deg,#2563eb,#3b82f6);color:#fff;
+  font-size:13.5px;font-weight:600;padding:11px 22px;border-radius:11px;
+  opacity:0;pointer-events:none;transition:.25s;z-index:99;
+  box-shadow:0 8px 24px rgba(37,99,235,.4);
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+footer{
+  border-top:1px solid var(--line);background:rgba(3,7,18,.7);
+  padding:22px 0;font-size:12.5px;color:var(--muted);
+}
+.foot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center}
+.linkbtn{background:none;border:none;color:var(--muted);text-decoration:underline;padding:0;font-size:12.5px}
+.linkbtn:hover{color:var(--red)}
+
+@media(max-width:760px){
+  .chat-wrap{grid-template-columns:1fr}
+  .threads{max-height:none}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:560px){
+  .grid2{grid-template-columns:1fr}
+  .brand p{display:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="mark">🏭</div>
+        <div>
+          <h1>MetalHouse</h1>
+          <p>India's steel bartan marketplace. Find makers, share your requirement, close the deal.</p>
+        </div>
+      </div>
+      <button class="me-btn" id="me-btn" data-action="profile">🏭 Business</button>
+    </div>
+    <nav class="tabs">
+      <button class="tab active" data-view="dashboard">🏠 Dashboard</button>
+      <button class="tab" data-view="find">🔍 Find products</button>
+      <button class="tab" data-view="requirements">📋 Requirements</button>
+      <button class="tab" data-view="my">📦 My products</button>
+      <button class="tab" data-view="chats">💬 Chats &amp; deals</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="view" id="view-dashboard">
+    <div class="stats" id="stats"></div>
+    <div class="card banner">
+      <p id="dash-banner"></p>
+      <button class="btn link" data-action="add-product">＋ Add product</button>
+    </div>
+    <div id="dash-products"></div>
+  </section>
+
+  <section class="view" id="view-find" hidden>
+    <h2 class="h2">Find products</h2>
+    <p class="sub">Browse steel bartan listed by manufacturers, traders and wholesalers across India.</p>
+    <div class="searchbar">
+      <input id="find-search" placeholder="Search by product, grade, city or business…" autocomplete="off">
+    </div>
+    <div class="chips" id="find-cats" style="margin:14px 0 20px"></div>
+    <div id="find-results"></div>
+  </section>
+
+  <section class="view" id="view-requirements" hidden>
+    <h2 class="h2">Requirements</h2>
+    <p class="sub">Post what you need — makers will send you offers.</p>
+
+    <form class="card pad" data-action="add-req" style="margin-bottom:30px">
+      <div class="grid2">
+        <label class="field"><span>What do you need? *</span>
+          <input name="title" required placeholder="e.g. SS 304 Dinner Plates 13 inch">
+        </label>
+        <label class="field"><span>Category</span>
+          <select name="category">
+            <option>Plate / Thali</option>
+            <option>Glass / Tumbler</option>
+            <option>Bowl / Katori</option>
+            <option>Spoon / Cutlery</option>
+            <option>Cookware</option>
+            <option>Storage / Dabba</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label class="field"><span>Grade</span>
+          <input name="grade" placeholder="SS 202 / SS 304">
+        </label>
+        <label class="field"><span>Quantity</span>
+          <input name="qty" placeholder="5000 pcs">
+        </label>
+        <label class="field"><span>Target price (₹)</span>
+          <input name="target" type="number" min="0" placeholder="95">
+        </label>
+        <label class="field"><span>Delivery location</span>
+          <input name="location" placeholder="Delhi">
+        </label>
+      </div>
+      <label class="field"><span>Notes</span>
+        <textarea name="notes" rows="2" placeholder="Finish, thickness, packaging, payment terms…"></textarea>
+      </label>
+      <button class="btn" type="submit">Post requirement</button>
+    </form>
+
+    <h3 class="h3" style="margin-top:0">Live requirements</h3>
+    <div class="list" id="req-list"></div>
+  </section>
+
+  <section class="view" id="view-my" hidden>
+    <div class="row-between" style="margin-bottom:18px">
+      <div>
+        <h2 class="h2">My products</h2>
+        <p class="sub" style="margin:0">Products listed under your business.</p>
+      </div>
+      <button class="btn" data-action="add-product">＋ Add product</button>
+    </div>
+    <div id="my-products"></div>
+  </section>
+
+  <section class="view" id="view-chats" hidden>
+    <h2 class="h2">Chats &amp; deals</h2>
+    <p class="sub">Talk to buyers and sellers, and confirm the offers you receive.</p>
+    <div class="subtabs">
+      <button class="subtab active" data-chattab="chats">💬 Chats</button>
+      <button class="subtab" data-chattab="deals">🤝 Deals</button>
+    </div>
+    <div id="chats-body"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>MetalHouse — prototype. Everything is stored locally in your browser.</span>
+    <button class="linkbtn" data-action="reset">Reset demo data</button>
+  </div>
+</footer>
+
+<div class="modal" id="modal" hidden><div class="modal-box" id="modal-box"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =============== HELPERS =============== */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const uid = p => (p || '') + Math.random().toString(36).slice(2, 9);
+const inr = n => '₹' + Number(n || 0).toLocaleString('en-IN');
+
+function timeAgo(ts){
+  const m = Math.floor((Date.now() - ts) / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return m + 'm ago';
+  const h = Math.floor(m / 60);
+  if (h < 24) return h + 'h ago';
+  return Math.floor(h / 24) + 'd ago';
+}
+
+const CATS = [
+  { name:'Plate / Thali',   icon:'🍽️' },
+  { name:'Glass / Tumbler', icon:'🥛' },
+  { name:'Bowl / Katori',   icon:'🥣' },
+  { name:'Spoon / Cutlery', icon:'🥄' },
+  { name:'Cookware',        icon:'🍲' },
+  { name:'Storage / Dabba', icon:'🥡' },
+  { name:'Other',           icon:'🔧' }
+];
+const catIcon = n => (CATS.find(c => c.name === n) || { icon:'🔧' }).icon;
+
+/* Steel / kitchen images from Unsplash (stable public URLs) */
+const IMG = {
+  plate:    'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=600&h=450&fit=crop&q=80',
+  plate2:   'https://images.unsplash.com/photo-1584990347449-a2d4c2f0a7e8?w=600&h=450&fit=crop&q=80',
+  glass:    'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&h=450&fit=crop&q=80',
+  bowl:     'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=600&h=450&fit=crop&q=80',
+  spoon:    'https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=600&h=450&fit=crop&q=80',
+  cookware: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=450&fit=crop&q=80',
+  cookware2:'https://images.unsplash.com/photo-1585515320310-259814833e62?w=600&h=450&fit=crop&q=80',
+  storage:  'https://images.unsplash.com/photo-1594224457860-02e1ec6b24d7?w=600&h=450&fit=crop&q=80',
+  set:      'https://images.unsplash.com/photo-1544233726-9f1d2b27be8b?w=600&h=450&fit=crop&q=80'
+};
+
+/* =============== STATE =============== */
+const KEY = 'metalhouse_v2';
+
+function seed(){
+  const H = 3600e3;
+  return {
+    meId: 'b1',
+    businesses: [
+      { id:'b1', name:'yash steel', type:'Manufacturer', city:'Bangalore', state:'Karnataka',
+        pincode:'560001', phone:'9824971519', gst:'29AAACC1206D2ZB' },
+      { id:'b2', name:'Sharma Metal Works', type:'Manufacturer', city:'Rajkot', state:'Gujarat',
+        pincode:'360001', phone:'9898012345', gst:'24AABCS1429P1ZV' },
+      { id:'b3', name:'Kerala Steel Traders', type:'Trader', city:'Kochi', state:'Kerala',
+        pincode:'682001', phone:'9847011223', gst:'32AAACK9911L1Z8' },
+      { id:'b4', name:'Delhi Bartan House', type:'Wholesaler', city:'Delhi', state:'Delhi',
+        pincode:'110006', phone:'9811223344', gst:'07AAACD4455M1Z2' },
+      { id:'b5', name:'Chennai Utensils Co.', type:'Manufacturer', city:'Chennai', state:'Tamil Nadu',
+        pincode:'600001', phone:'9445566778', gst:'33AAACC7788N1ZQ' }
+    ],
+    products: [
+      { id:'p1', ownerId:'b1', title:'steel dish designed', category:'Plate / Thali', grade:'SS 202',
+        size:'12 cm', weight:'300 gm', price:2, unit:'pc', minOrder:'1000 pcs',
+        capacity:'300000 pcs/month', image: IMG.plate,
+        desc:'Mirror-polished dinner plate, food-grade finish, bulk export packing available.',
+        createdAt: Date.now() - 2*H },
+      { id:'p2', ownerId:'b1', title:'SS Dinner Plate 13 inch', category:'Plate / Thali', grade:'SS 304',
+        size:'13 in', weight:'420 gm', price:145, unit:'pc', minOrder:'500 pcs',
+        capacity:'60000 pcs/month', image: IMG.plate2,
+        desc:'Heavy gauge, laser-edge rim, ideal for hotels and caterers.', createdAt: Date.now() - 30*H },
+      { id:'p3', ownerId:'b1', title:'Steel Water Glass 300 ml', category:'Glass / Tumbler', grade:'SS 202',
+        size:'300 ml', weight:'110 gm', price:38, unit:'pc', minOrder:'1000 pcs',
+        capacity:'200000 pcs/month', image: IMG.glass,
+        desc:'Seamless pressed body, satin finish inside.', createdAt: Date.now() - 50*H },
+      { id:'p4', ownerId:'b2', title:'Heavy Katori 200 ml', category:'Bowl / Katori', grade:'SS 304',
+        size:'200 ml', weight:'95 gm', price:42, unit:'pc', minOrder:'2000 pcs',
+        capacity:'150000 pcs/month', image: IMG.bowl,
+        desc:'Deep-drawn katori with rolled edge. Rajkot made.', createdAt: Date.now() - 8*H },
+      { id:'p5', ownerId:'b2', title:'SS Serving Spoon Set', category:'Spoon / Cutlery', grade:'SS 202',
+        size:'18 cm', weight:'60 gm', price:26, unit:'pc', minOrder:'3000 pcs',
+        capacity:'400000 pcs/month', image: IMG.spoon,
+        desc:'Set of 6, mirror finish, gift-box packing optional.', createdAt: Date.now() - 12*H },
+      { id:'p6', ownerId:'b2', title:'Steel Dabba 5-tier', category:'Storage / Dabba', grade:'SS 202',
+        size:'5 tier', weight:'1.2 kg', price:420, unit:'pc', minOrder:'200 pcs',
+        capacity:'8000 pcs/month', image: IMG.storage,
+        desc:'Tiffin-style stackable dabba with locking clip.', createdAt: Date.now() - 20*H },
+      { id:'p7', ownerId:'b3', title:'SS Tumbler 250 ml', category:'Glass / Tumbler', grade:'SS 304',
+        size:'250 ml', weight:'120 gm', price:52, unit:'pc', minOrder:'1500 pcs',
+        capacity:'90000 pcs/month', image: IMG.glass,
+        desc:'Traders stock — ready dispatch from Kochi.', createdAt: Date.now() - 16*H },
+      { id:'p8', ownerId:'b3', title:'Idli Plate 4-slot', category:'Plate / Thali', grade:'SS 202',
+        size:'4 slot', weight:'480 gm', price:135, unit:'pc', minOrder:'300 pcs',
+        capacity:'20000 pcs/month', image: IMG.plate,
+        desc:'Even-heat idli plate, fits standard pressure cooker.', createdAt: Date.now() - 22*H },
+      { id:'p9', ownerId:'b4', title:'Steel Kadai 2 L', category:'Cookware', grade:'SS 304',
+        size:'2 L', weight:'1.1 kg', price:640, unit:'pc', minOrder:'100 pcs',
+        capacity:'5000 pcs/month', image: IMG.cookware,
+        desc:'Induction-friendly base, riveted handles.', createdAt: Date.now() - 26*H },
+      { id:'p10', ownerId:'b4', title:'Steel Pressure Cooker 3 L', category:'Cookware', grade:'SS 304',
+        size:'3 L', weight:'1.8 kg', price:980, unit:'pc', minOrder:'50 pcs',
+        capacity:'4000 pcs/month', image: IMG.cookware2,
+        desc:'ISI-marked, 5-year warranty on body.', createdAt: Date.now() - 40*H },
+      { id:'p11', ownerId:'b5', title:'Steel Coffee Filter Set', category:'Other', grade:'SS 202',
+        size:'200 ml', weight:'250 gm', price:180, unit:'pc', minOrder:'250 pcs',
+        capacity:'12000 pcs/month', image: IMG.set,
+        desc:'South Indian filter with upper and lower tumbler.', createdAt: Date.now() - 34*H },
+      { id:'p12', ownerId:'b5', title:'Steel Dinner Set 24 pcs', category:'Other', grade:'SS 202',
+        size:'24 pcs', weight:'3.4 kg', price:1250, unit:'set', minOrder:'40 pcs',
+        capacity:'3000 set/month', image: IMG.set,
+        desc:'6 plates, 6 katori, 6 glasses, 6 spoons. Gift packing.', createdAt: Date.now() - 46*H }
+    ],
+    requirements: [
+      { id:'r1', buyerId:'b4', title:'SS 304 Dinner Plates — 5000 pcs', category:'Plate / Thali',
+        grade:'SS 304', qty:'5000 pcs', target:95, location:'Delhi',
+        notes:'Mirror finish, 1.2 mm thickness. Mill test certificate required.',
+        status:'open', createdAt: Date.now() - 6*H },
+      { id:'r2', buyerId:'b3', title:'Steel Water Glasses 300 ml — 20000 pcs', category:'Glass / Tumbler',
+        grade:'SS 202', qty:'20000 pcs', target:30, location:'Kochi',
+        notes:'Bulk order for the festive season. Delivery within 30 days.',
+        status:'open', createdAt: Date.now() - 20*H },
+      { id:'r3', buyerId:'b2', title:'SS Katori 150 ml — 10000 pcs', category:'Bowl / Katori',
+        grade:'SS 202', qty:'10000 pcs', target:22, location:'Rajkot',
+        notes:'', status:'open', createdAt: Date.now() - 44*H }
+    ],
+    chats: [],
+    deals: []
+  };
+}
+
+let S = (() => {
+  try {
+    const raw = JSON.parse(localStorage.getItem(KEY));
+    if (raw && raw.businesses && raw.products) return raw;
+  } catch (e) {}
+  return seed();
+})();
+
+const save = () => localStorage.setItem(KEY, JSON.stringify(S));
+const me   = () => S.businesses.find(b => b.id === S.meId) || S.businesses[0];
+const biz  = id => S.businesses.find(b => b.id === id) ||
+  { name:'Business', type:'', city:'', state:'', pincode:'', phone:'', gst:'' };
+
+let findQ = '';
+let findCat = 'All';
+let chatTab = 'chats';
+let activeChat = null;
+let focusMsg = false;
+let pendingImage = '';  // for product modal
+
+/* =============== TOAST + MODAL =============== */
+let toastTimer;
+function toast(msg){
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+const closeModal = () => { $('#modal').hidden = true; $('#modal-box').innerHTML = ''; pendingImage = ''; };
+
+/* =============== NAVIGATION =============== */
+function go(view){
+  $$('.view').forEach(v => v.hidden = v.id !== 'view-' + view);
+  $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === view));
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* =============== RENDER =============== */
+function renderHeader(){
+  $('#me-btn').innerHTML = '🏭 ' + esc(me().name);
+}
+
+function productCard(p){
+  const o = biz(p.ownerId);
+  const isMine = p.ownerId === S.meId;
+  const meta = [p.size ? 'Size ' + esc(p.size) : '', p.weight ? 'Weight ' + esc(p.weight) : '']
+    .filter(Boolean).join(' · ') || '—';
+
+  return `
+  <article class="pcard">
+    <div class="media">
+      <span class="cat-tag">${esc(p.category)}</span>
+      ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy"
+                    onerror="this.style.display='none'">` : ''}
+      <span>${catIcon(p.category)}</span>
+    </div>
+    <div class="pbody">
+      <h4>${esc(p.title)}</h4>
+      <div class="chips">
+        ${p.grade ? `<span class="chip chip-blue">${esc(p.grade)}</span>` : ''}
+      </div>
+      <p class="meta">${meta}</p>
+      <p class="price">${inr(p.price)} <span>/ ${esc(p.unit)}</span></p>
+      <p class="meta">Min order ${esc(p.minOrder || '—')} · Capacity ${esc(p.capacity || '—')}</p>
+      <div class="divider"></div>
+      <p class="biz">${esc(o.name)} <span class="chip">${esc(o.type || 'Business')}</span></p>
+      <p class="meta">
+        ${esc([o.city, o.state].filter(Boolean).join(', '))}${o.pincode ? ' – ' + esc(o.pincode) : ''}
+        ${o.phone ? ' · 📞 ' + esc(o.phone) : ''}
+      </p>
+      ${o.gst ? `<p class="meta">GST ${esc(o.gst)}</p>` : ''}
+      ${p.desc ? `<p class="desc">${esc(p.desc)}</p>` : ''}
+      <div class="actions">
+        ${isMine
+          ? `<span class="chip chip-blue">Your product</span>
+             <button class="btn ghost sm" data-action="edit-product" data-id="${p.id}">Edit</button>
+             <button class="btn danger sm" data-action="del-product" data-id="${p.id}">Delete</button>`
+          : `<button class="btn sm" data-action="contact" data-id="${p.id}">Contact seller</button>`}
+      </div>
+    </div>
+  </article>`;
+}
+
+function myProductsHTML(){
+  const mine = S.products.filter(p => p.ownerId === S.meId)
+                         .sort((a, b) => b.createdAt - a.createdAt);
+  if (!mine.length){
+    return `<div class="empty">
+      <b>No products listed yet</b>
+      Add your first steel bartan product — it will appear here under its category.
+      <div style="margin-top:16px"><button class="btn" data-action="add-product">＋ Add product</button></div>
+    </div>`;
+  }
+  return CATS.map(c => {
+    const items = mine.filter(p => p.category === c.name);
+    if (!items.length) return '';
+    return `<div class="group">
+      <h3 class="group-title">${esc(c.name)} <span class="count">${items.length}</span></h3>
+      <div class="pgrid">${items.map(productCard).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderDashboard(){
+  const mine = S.products.filter(p => p.ownerId === S.meId).length;
+  const openReqs = S.requirements.filter(r => r.status === 'open').length;
+  const myDeals = S.deals.filter(d => d.buyerId === S.meId || d.sellerId === S.meId).length;
+
+  $('#stats').innerHTML = `
+    <div class="stat"><div class="ico">🏭</div><div class="num">${S.businesses.length}</div><div class="lbl">Businesses</div></div>
+    <div class="stat"><div class="ico">📦</div><div class="num">${mine}</div><div class="lbl">Products</div></div>
+    <div class="stat"><div class="ico">📋</div><div class="num">${openReqs}</div><div class="lbl">Requirements</div></div>
+    <div class="stat"><div class="ico">🤝</div><div class="num">${myDeals}</div><div class="lbl">Deals</div></div>`;
+
+  $('#dash-banner').innerHTML =
+    `You have <b>${mine}</b> product(s) listed. They appear below under their item category.`;
+
+  const html = myProductsHTML();
+  $('#dash-products').innerHTML = html;
+  $('#my-products').innerHTML  = html;
+}
+
+function renderFindChips(){
+  const cats = ['All', ...CATS.map(c => c.name)];
+  $('#find-cats').innerHTML = cats.map(c => `
+    <button class="chip chip-btn ${findCat === c ? 'active' : ''}" data-cat="${esc(c)}">
+      ${c === 'All' ? 'All items' : esc(c)}
+    </button>`).join('');
+}
+
+function renderFindResults(){
+  const q = findQ.trim().toLowerCase();
+  let list = [...S.products].sort((a, b) => b.createdAt - a.createdAt);
+  if (findCat !== 'All') list = list.filter(p => p.category === findCat);
+  if (q){
+    list = list.filter(p => {
+      const o = biz(p.ownerId);
+      return [p.title, p.grade, p.category, p.desc, o.name, o.city, o.state]
+        .join(' ').toLowerCase().includes(q);
+    });
+  }
+  $('#find-results').innerHTML = list.length
+    ? `<p class="meta" style="margin-bottom:12px">${list.length} product${list.length > 1 ? 's' : ''} found</p>
+       <div class="pgrid">${list.map(productCard).join('')}</div>`
+    : `<div class="empty"><b>Nothing matched</b>Try a different keyword or category.</div>`;
+}
+
+function reqCard(r){
+  const b = biz(r.buyerId);
+  const mine = r.buyerId === S.meId;
+  const offers = S.deals.filter(d => d.reqId === r.id);
+  const myOffer = offers.find(d => d.sellerId === S.meId);
+
+  let actions = '';
+  if (mine){
+    actions = `<span class="chip chip-blue">Your requirement</span>
+      <span class="chip">${offers.length} offer${offers.length === 1 ? '' : 's'}</span>
+      <button class="btn danger sm" data-action="del-req" data-id="${r.id}">Delete</button>`;
+  } else if (r.status !== 'open'){
+    actions = `<span class="chip">Closed</span>`;
+  } else if (myOffer){
+    actions = `<span class="chip chip-amber">Offer sent · ${inr(myOffer.price)}</span>`;
+  } else {
+    actions = `<button class="btn sm" data-action="offer" data-id="${r.id}">Send offer</button>`;
+  }
+
+  return `<article class="card pad">
+    <div class="row-between">
+      <div>
+        <h4 style="font-size:15.5px">${esc(r.title)}</h4>
+        <p class="meta">by ${esc(b.name)}${mine ? ' (you)' : ''} ·
+          ${esc([b.city, b.state].filter(Boolean).join(', ') || '—')} · ${timeAgo(r.createdAt)}</p>
+      </div>
+      <span class="chip ${r.status === 'open' ? 'chip-cyan' : ''}">${esc(r.status)}</span>
+    </div>
+    <div class="specs">
+      <div>Category<b>${esc(r.category)}</b></div>
+      <div>Grade<b>${esc(r.grade) || '—'}</b></div>
+      <div>Quantity<b>${esc(r.qty) || '—'}</b></div>
+      <div>Target<b>${r.target ? inr(r.target) : 'Open'}</b></div>
+      <div>Location<b>${esc(r.location) || '—'}</b></div>
+    </div>
+    ${r.notes ? `<p class="desc">${esc(r.notes)}</p>` : ''}
+    <div class="actions">${actions}</div>
+  </article>`;
+}
+
+function renderRequirements(){
+  const list = [...S.requirements].sort((a, b) => b.createdAt - a.createdAt);
+  $('#req-list').innerHTML = list.length
+    ? list.map(reqCard).join('')
+    : `<div class="empty"><b>No requirements yet</b>Post the first one using the form above.</div>`;
+}
+
+function getChat(withId, ctxTitle){
+  let c = S.chats.find(x => x.withId === withId && x.ctxTitle === ctxTitle);
+  if (!c){
+    c = { id: uid('c'), withId, ctxTitle, messages: [], createdAt: Date.now(), updatedAt: Date.now() };
+    S.chats.push(c);
+  }
+  return c;
+}
+
+function dealsHTML(){
+  const deals = [...S.deals].sort((a, b) => b.createdAt - a.createdAt);
+  if (!deals.length){
+    return `<div class="empty"><b>No deals yet</b>Send an offer on a requirement — it shows up here so the buyer can confirm it.</div>`;
+  }
+  return `<div class="list">` + deals.map(d => {
+    const r = S.requirements.find(x => x.id === d.reqId) || { title:'Requirement' };
+    const buyer = biz(d.buyerId);
+    const seller = biz(d.sellerId);
+    const iAmBuyer = d.buyerId === S.meId;
+    const badge = d.status === 'confirmed' ? 'chip-cyan'
+                : d.status === 'declined'  ? 'chip-red' : 'chip-amber';
+
+    return `<article class="card pad">
+      <div class="row-between">
+        <div>
+          <h4 style="font-size:15px">${esc(r.title)}</h4>
+          <p class="meta">${iAmBuyer ? 'Seller: ' + esc(seller.name) : 'Buyer: ' + esc(buyer.name)}
+            · ${timeAgo(d.createdAt)}</p>
+        </div>
+        <span class="chip ${badge}">${esc(d.status)}</span>
+      </div>
+      <div class="specs">
+        <div>Price<b>${inr(d.price)}</b></div>
+        <div>Lead time<b>${esc(d.leadTime) || '—'}</b></div>
+        <div>Quantity<b>${esc(r.qty) || '—'}</b></div>
+        <div>Location<b>${esc(r.location) || '—'}</b></div>
+      </div>
+      ${d.status === 'pending' && iAmBuyer ? `<div class="actions">
+          <button class="btn sm" data-action="accept-deal" data-id="${d.id}">Accept offer</button>
+          <button class="btn ghost sm" data-action="decline-deal" data-id="${d.id}">Decline</button>
+        </div>` : ''}
+      ${d.status === 'pending' && !iAmBuyer ? `<p class="meta">Waiting for the buyer to respond.</p>` : ''}
+      ${d.status === 'confirmed' ? `<p class="meta">Deal confirmed — coordinate delivery in chat.</p>` : ''}
+    </article>`;
+  }).join('') + `</div>`;
+}
+
+function renderChats(){
+  $$('.subtab').forEach(b => b.classList.toggle('active', b.dataset.chattab === chatTab));
+  const body = $('#chats-body');
+
+  if (chatTab === 'deals'){ body.innerHTML = dealsHTML(); return; }
+
+  const chats = [...S.chats].sort((a, b) => b.updatedAt - a.updatedAt);
+  if (!chats.length){
+    body.innerHTML = `<div class="empty"><b>No chats yet</b>
+      Open a product and tap <b>Contact seller</b>, or send an offer on a requirement.</div>`;
+    return;
+  }
+
+  if (!activeChat || !chats.some(c => c.id === activeChat)) activeChat = chats[0].id;
+  const c = chats.find(x => x.id === activeChat);
+  const other = biz(c.withId);
+
+  body.innerHTML = `
+    <div class="chat-wrap">
+      <div class="threads">
+        ${chats.map(ch => {
+          const o = biz(ch.withId);
+          const last = ch.messages[ch.messages.length - 1];
+          return `<button class="thread ${ch.id === activeChat ? 'active' : ''}"
+                    data-action="open-chat" data-id="${ch.id}">
+            <b>${esc(o.name)}</b>
+            <small>${esc(ch.ctxTitle)}</small>
+            <small>${last ? esc(last.text.slice(0, 42)) : 'No messages yet'}</small>
+          </button>`;
+        }).join('')}
+      </div>
+      <div class="pane">
+        <div class="pane-head">
+          <b style="font-size:14px">${esc(other.name)}</b>
+          <div class="meta">${esc(c.ctxTitle)} · ${esc([other.city, other.state].filter(Boolean).join(', '))}
+            ${other.phone ? ' · 📞 ' + esc(other.phone) : ''}</div>
+        </div>
+        <div class="msgs" id="msgs">
+          ${c.messages.length
+            ? c.messages.map(m => `<div class="msg ${m.from === S.meId ? 'mine' : ''}">${esc(m.text)}
+                <small>${new Date(m.at).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' })}</small>
+              </div>`).join('')
+            : `<div class="meta">Say hello 👋</div>`}
+        </div>
+        <form class="msg-form" data-action="send-msg">
+          <input type="hidden" name="chatId" value="${c.id}">
+          <input name="text" id="msg-input" placeholder="Type a message…" autocomplete="off" required>
+          <button class="btn sm" type="submit">Send</button>
+        </form>
+      </div>
+    </div>`;
+
+  const m = $('#msgs');
+  if (m) m.scrollTop = m.scrollHeight;
+  if (focusMsg){ focusMsg = false; const i = $('#msg-input'); if (i) i.focus(); }
+}
+
+function render(){
+  renderHeader();
+  renderDashboard();
+  renderFindChips();
+  renderFindResults();
+  renderRequirements();
+  renderChats();
+}
+
+/* =============== MODALS =============== */
+function openProductModal(p){
+  const editing = !!p;
+  pendingImage = p?.image || '';
+
+  const catOpts = CATS.map(c =>
+    `<option ${p && p.category === c.name ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
+
+  $('#modal-box').innerHTML = `
+    <h3>${editing ? 'Edit product' : 'Add product'}</h3>
+    <p class="muted">Your product appears under its item category on the dashboard.</p>
+    <form data-action="save-product">
+      <input type="hidden" name="id" value="${editing ? esc(p.id) : ''}">
+      <label class="field"><span>Product title *</span>
+        <input name="title" required value="${editing ? esc(p.title) : ''}" placeholder="e.g. steel dish designed">
+      </label>
+
+      <div class="field">
+        <span>Image</span>
+        <div class="img-picker">
+          <div class="img-preview" id="img-preview">
+            ${pendingImage ? `<img src="${esc(pendingImage)}" onerror="this.remove()">` : '🖼️'}
+          </div>
+          <div class="img-picker-info">
+            <label>Paste image URL</label>
+            <input type="url" id="img-url" value="${esc(pendingImage)}" placeholder="https://…">
+            <label class="img-upload-btn" style="margin-top:8px">
+              📷 Upload from device
+              <input type="file" id="img-file" accept="image/*">
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <label class="field"><span>Category</span><select name="category">${catOpts}</select></label>
+        <label class="field"><span>Grade</span>
+          <input name="grade" value="${editing ? esc(p.grade || '') : ''}" placeholder="SS 202"></label>
+        <label class="field"><span>Size</span>
+          <input name="size" value="${editing ? esc(p.size || '') : ''}" placeholder="12 cm"></label>
+        <label class="field"><span>Weight</span>
+          <input name="weight" value="${editing ? esc(p.weight || '') : ''}" placeholder="300 gm"></label>
+        <label class="field"><span>Price (₹) *</span>
+          <input name="price" type="number" min="0" step="0.01" required
+                 value="${editing ? p.price : ''}" placeholder="2"></label>
+        <label class="field"><span>Unit</span>
+          <input name="unit" value="${editing ? esc(p.unit || 'pc') : 'pc'}" placeholder="pc"></label>
+        <label class="field"><span>Min order</span>
+          <input name="minOrder" value="${editing ? esc(p.minOrder || '') : ''}" placeholder="1000 pcs"></label>
+        <label class="field"><span>Capacity / month</span>
+          <input name="capacity" value="${editing ? esc(p.capacity || '') : ''}" placeholder="300000 pcs/month"></label>
+      </div>
+      <label class="field"><span>Description</span>
+        <textarea name="desc" rows="2">${editing ? esc(p.desc || '') : ''}</textarea></label>
+      <div class="modal-actions">
+        <button type="button" class="btn ghost" data-action="close-modal">Cancel</button>
+        <button class="btn" type="submit">${editing ? 'Save changes' : 'Add product'}</button>
+      </div>
+    </form>`;
+
+  $('#modal').hidden = false;
+
+  /* image URL + upload wiring */
+  const urlInput  = $('#img-url');
+  const preview   = $('#img-preview');
+  const fileInput = $('#img-file');
+
+  const setPreview = (src) => {
+    pendingImage = src;
+    preview.innerHTML = src
+      ? `<img src="${esc(src)}" onerror="this.remove()">`
+      : '🖼️';
+  };
+
+  urlInput.addEventListener('input', () => setPreview(urlInput.value.trim()));
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) return;
+    if (file.size > 900 * 1024){
+      toast('Image too large (max ~900 KB). Use a URL instead.');
+      fileInput.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => { setPreview(reader.result); urlInput.value = ''; };
+    reader.readAsDataURL(file);
+  });
+
+  const t = $('input[name="title"]');
+  if (t) t.focus();
+}
+
+function openOfferModal(reqId){
+  const r = S.requirements.find(x => x.id === reqId);
+  if (!r) return;
+  $('#modal-box').innerHTML = `
+    <h3>Send offer</h3>
+    <p class="muted">${esc(r.title)}${r.qty ? ' · ' + esc(r.qty) : ''}${r.location ? ' · ' + esc(r.location) : ''}</p>
+    <form data-action="send-offer">
+      <input type="hidden" name="reqId" value="${esc(r.id)}">
+      <label class="field"><span>Your price (₹ per unit) *</span>
+        <input name="price" type="number" min="1" required value="${r.target || ''}"></label>
+      <label class="field"><span>Lead time *</span>
+        <input name="leadTime" required placeholder="e.g. 20 days"></label>
+      <label class="field"><span>Message</span>
+        <textarea name="note" rows="3" placeholder="Payment terms, freight, MOQ…"></textarea></label>
+      <div class="modal-actions">
+        <button type="button" class="btn ghost" data-action="close-modal">Cancel</button>
+        <button class="btn" type="submit">Send offer</button>
+      </div>
+    </form>`;
+  $('#modal').hidden = false;
+}
+
+function openProfileModal(){
+  const b = me();
+  const types = ['Manufacturer', 'Trader', 'Wholesaler', 'Buyer'];
+  $('#modal-box').innerHTML = `
+    <h3>Business profile</h3>
+    <p class="muted">This is how other businesses see you.</p>
+    <form data-action="save-profile">
+      <label class="field"><span>Business name *</span>
+        <input name="name" required value="${esc(b.name)}"></label>
+      <div class="grid2">
+        <label class="field"><span>Type</span>
+          <select name="type">${types.map(t =>
+            `<option ${b.type === t ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
+        <label class="field"><span>Phone</span>
+          <input name="phone" value="${esc(b.phone || '')}"></label>
+        <label class="field"><span>City</span>
+          <input name="city" value="${esc(b.city || '')}"></label>
+        <label class="field"><span>State</span>
+          <input name="state" value="${esc(b.state || '')}"></label>
+        <label class="field"><span>Pincode</span>
+          <input name="pincode" value="${esc(b.pincode || '')}"></label>
+        <label class="field"><span>GST number</span>
+          <input name="gst" value="${esc(b.gst || '')}"></label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn ghost" data-action="close-modal">Cancel</button>
+        <button class="btn" type="submit">Save</button>
+      </div>
+    </form>`;
+  $('#modal').hidden = false;
+}
+
+/* =============== ACTIONS =============== */
+function contactSeller(productId){
+  const p = S.products.find(x => x.id === productId);
+  if (!p || p.ownerId === S.meId) return;
+  const c = getChat(p.ownerId, p.title);
+  if (!c.messages.length){
+    c.messages.push({
+      from: S.meId,
+      text: `Hi, I'm interested in "${p.title}"${p.grade ? ' (' + p.grade + ')' : ''}. Please share your best price and MOQ.`,
+      at: Date.now()
+    });
+  }
+  c.updatedAt = Date.now();
+  save();
+  activeChat = c.id;
+  chatTab = 'chats';
+  toast('Chat opened');
+  go('chats');
+}
+
+function deleteProduct(id){
+  if (!confirm('Delete this product?')) return;
+  S.products = S.products.filter(p => p.id !== id);
+  save(); toast('Product deleted'); render();
+}
+
+function deleteRequirement(id){
+  if (!confirm('Delete this requirement and all offers on it?')) return;
+  S.requirements = S.requirements.filter(r => r.id !== id);
+  S.deals = S.deals.filter(d => d.reqId !== id);
+  save(); toast('Requirement deleted'); render();
+}
+
+function acceptDeal(id){
+  const d = S.deals.find(x => x.id === id);
+  if (!d || d.status !== 'pending' || d.buyerId !== S.meId) return;
+  if (!confirm(`Confirm this deal at ${inr(d.price)}?`)) return;
+  d.status = 'confirmed';
+  const r = S.requirements.find(x => x.id === d.reqId);
+  if (r) r.status = 'closed';
+  S.deals.forEach(x => {
+    if (x.reqId === d.reqId && x.id !== d.id && x.status === 'pending') x.status = 'declined';
+  });
+  if (r){
+    const c = S.chats.find(ch => ch.withId === d.sellerId && ch.ctxTitle === r.title);
+    if (c){
+      c.messages.push({ from: S.meId, text: `Deal confirmed at ${inr(d.price)}. Please proceed with production.`, at: Date.now() });
+      c.updatedAt = Date.now();
+    }
+  }
+  save(); toast('Deal confirmed'); render();
+}
+
+function declineDeal(id){
+  const d = S.deals.find(x => x.id === id);
+  if (!d || d.status !== 'pending' || d.buyerId !== S.meId) return;
+  if (!confirm('Decline this offer?')) return;
+  d.status = 'declined'; save(); toast('Offer declined'); render();
+}
+
+/* =============== CLICK DELEGATION =============== */
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-view],[data-chattab],[data-cat],[data-action]');
+  if (!el) return;
+
+  if (el.dataset.view)    { go(el.dataset.view); return; }
+  if (el.dataset.chattab) { chatTab = el.dataset.chattab; renderChats(); return; }
+  if (el.dataset.cat)     { findCat = el.dataset.cat; renderFindChips(); renderFindResults(); return; }
+
+  const a = el.dataset.action;
+  const id = el.dataset.id;
+
+  switch (a){
+    case 'add-product':  openProductModal(null); break;
+    case 'edit-product': openProductModal(S.products.find(p => p.id === id)); break;
+    case 'del-product':  deleteProduct(id); break;
+    case 'contact':      contactSeller(id); break;
+    case 'offer':        openOfferModal(id); break;
+    case 'del-req':      deleteRequirement(id); break;
+    case 'accept-deal':  acceptDeal(id); break;
+    case 'decline-deal': declineDeal(id); break;
+    case 'open-chat':    activeChat = id; renderChats(); break;
+    case 'profile':      openProfileModal(); break;
+    case 'close-modal':  closeModal(); break;
+    case 'reset':
+      if (confirm('Reset all demo data? Your added products and chats will be lost.')){
+        S = seed(); save(); activeChat = null; chatTab = 'chats';
+        findQ = ''; findCat = 'All';
+        const si = $('#find-search'); if (si) si.value = '';
+        toast('Demo data reset'); go('dashboard');
+      }
+      break;
+  }
+});
+
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !$('#modal').hidden) closeModal();
+});
+
+/* =============== FORM SUBMISSIONS =============== */
+document.addEventListener('submit', e => {
+  const f = e.target;
+  const action = f.dataset.action;
+  if (!action) return;
+  e.preventDefault();
+
+  const fd = new FormData(f);
+  const val = n => String(fd.get(n) ?? '').trim();
+
+  if (action === 'add-req'){
+    const title = val('title');
+    if (!title) return;
+    S.requirements.push({
+      id: uid('r'), buyerId: S.meId, title,
+      category: val('category'), grade: val('grade'), qty: val('qty'),
+      target: Number(val('target')) || 0, location: val('location'),
+      notes: val('notes'), status: 'open', createdAt: Date.now()
+    });
+    save(); f.reset(); toast('Requirement posted'); render();
+    return;
+  }
+
+  if (action === 'save-product'){
+    const data = {
+      title: val('title'),
+      category: val('category') || 'Other',
+      grade: val('grade'),
+      size: val('size'),
+      weight: val('weight'),
+      price: Number(val('price')) || 0,
+      unit: val('unit') || 'pc',
+      minOrder: val('minOrder'),
+      capacity: val('capacity'),
+      image: pendingImage || '',
+      desc: val('desc')
+    };
+    if (!data.title || data.price <= 0) return;
+
+    const editId = val('id');
+    if (editId){
+      const p = S.products.find(x => x.id === editId);
+      if (p) Object.assign(p, data);
+      toast('Product updated');
+    } else {
+      S.products.push({ id: uid('p'), ownerId: S.meId, createdAt: Date.now(), ...data });
+      toast('Product added');
+    }
+    save(); closeModal(); render();
+    return;
+  }
+
+  if (action === 'send-offer'){
+    const reqId = val('reqId');
+    const r = S.requirements.find(x => x.id === reqId);
+    if (!r) return;
+    const price = Number(val('price'));
+    const leadTime = val('leadTime');
+    if (!price || !leadTime) return;
+
+    S.deals.push({
+      id: uid('d'), reqId, buyerId: r.buyerId, sellerId: S.meId,
+      price, leadTime, status: 'pending', createdAt: Date.now()
+    });
+
+    const chat = getChat(r.buyerId, r.title);
+    chat.messages.push({
+      from: S.meId,
+      text: `Offer sent: ${inr(price)}${r.qty ? ' for ' + r.qty : ''} · lead time ${leadTime}` +
+            (val('note') ? `\n${val('note')}` : ''),
+      at: Date.now()
+    });
+    chat.updatedAt = Date.now(); 
+
+    save(); closeModal();
+    activeChat = chat.id; chatTab = 'chats';
+    toast('Offer sent'); go('chats');
+    return;
+  }
+
+  if (action === 'save-profile'){
+    const b = me();
+    b.name = val('name') || b.name;
+    b.type = val('type') || b.type;
+    b.phone = val('phone'); b.city = val('city');
+    b.state = val('state'); b.pincode = val('pincode'); b.gst = val('gst');
+    save(); closeModal(); toast('Profile saved'); render();
+    return;
+  }
+
+  if (action === 'send-msg'){
+    const cid = val('chatId');
+    const text = val('text');
+    const c = S.chats.find(x => x.id === cid);
+    if (!c || !text) return;
+    c.messages.push({ from: S.meId, text, at: Date.now() });
+    c.updatedAt = Date.now();
+    save(); focusMsg = true; renderChats();
+    return;
+  }
+});
+
+/* search input */
+$('#find-search').addEventListener('input', e => {
+  findQ = e.target.value;
+  renderFindResults();
+});
+
+/* =============== INIT =============== */
+go('dashboard');
+</script>
+</body>
+</html>
